@@ -18,9 +18,7 @@ __pycache__/
 .DS_Store
 
 # Benchmark run output: every run is timestamped, can be huge, contains
-# IP samples from the user's own proxy account. We keep only the published
-# charts and screenshots under data/charts/.
-data/*
-!data/charts/
-!data/charts/**
+# IP samples from the user's own proxy account. Charts and screenshots
+# under data/charts/ are likewise local artefacts of a specific run.
+data/
 articles/
