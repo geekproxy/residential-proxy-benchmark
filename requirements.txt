@@ -1,0 +1,13 @@
+httpx[http2]==0.27.2
+h2==4.1.0
+curl_cffi==0.7.4
+nodriver==0.38
+pydantic==2.9.2
+pydantic-settings==2.5.2
+pyyaml==6.0.2
+aiofiles==24.1.0
+python-dotenv==1.0.1
+pandas==2.2.3
+rich==13.9.2
+tenacity==9.0.0
+dnspython==2.7.0

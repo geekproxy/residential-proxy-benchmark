@@ -1,0 +1,25 @@
+# Secrets and local config
+.env
+.env.local
+
+# Python virtualenvs
+.venv/
+venv/
+
+# Python build artifacts
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Editor noise
+.idea/
+.vscode/
+*.log
+.DS_Store
+
+# Benchmark run output: every run is timestamped, can be huge, contains
+# IP samples from the user's own proxy account. We keep only the published
+# charts and screenshots under data/charts/.
+data/*
+!data/charts/
+!data/charts/**

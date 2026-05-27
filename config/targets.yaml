@@ -1,0 +1,200 @@
+version: 1
+
+defaults:
+  timeout_seconds: 30
+  retries: 0
+  requests_per_target: 100
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+
+baselines:
+  - id: httpbin_ip
+    name: "httpbin.org/ip"
+    category: baseline
+    url: "https://httpbin.org/ip"
+    method: GET
+    success_status: [200]
+    success_body_contains: "origin"
+    difficulty: trivial
+    purpose: "Sanity check: confirms proxy returns its own IP."
+
+  - id: ipify
+    name: "api.ipify.org"
+    category: baseline
+    url: "https://api.ipify.org?format=json"
+    method: GET
+    success_status: [200]
+    success_body_contains: "ip"
+    difficulty: trivial
+    purpose: "IP echo for geo-accuracy and pool-diversity metrics."
+
+  - id: browserleaks_ip
+    name: "browserleaks.com/ip"
+    category: baseline
+    url: "https://browserleaks.com/ip"
+    method: GET
+    success_status: [200]
+    difficulty: easy
+    purpose: "WebRTC / DNS leak detection."
+
+ecommerce:
+  - id: amazon_product
+    name: "Amazon product page"
+    category: ecommerce
+    url: "https://www.amazon.com/dp/B0CHX1W1XY"
+    method: GET
+    success_status: [200]
+    success_body_contains: "productTitle"
+    block_indicators:
+      - "automated access"
+      - "captcha"
+      - "/errors/validateCaptcha"
+    difficulty: medium
+    purpose: "Soft antibot, geo-aware pricing."
+
+  - id: walmart_search
+    name: "Walmart search"
+    category: ecommerce
+    url: "https://www.walmart.com/search?q=laptop"
+    method: GET
+    success_status: [200]
+    block_indicators:
+      - "Robot or human"
+      - "px-captcha"
+    difficulty: hard
+    purpose: "PerimeterX-protected (HUMAN Security)."
+
+  - id: nike_product
+    name: "Nike product (Akamai)"
+    category: ecommerce
+    url: "https://www.nike.com/t/air-force-1-07-mens-shoes-jBrhbr/CW2288-111"
+    method: GET
+    success_status: [200]
+    block_indicators:
+      - "Access Denied"
+      - "Reference #"
+    difficulty: hard
+    purpose: "Akamai Bot Manager."
+
+  - id: stubhub_event
+    name: "StubHub event page"
+    category: ecommerce
+    url: "https://www.stubhub.com/find/s/?q=nba"
+    method: GET
+    success_status: [200]
+    block_indicators:
+      - "px-captcha"
+      - "Press & Hold"
+    difficulty: hard
+    purpose: "PerimeterX active challenge."
+
+  - id: booking_search
+    name: "Booking.com search"
+    category: ecommerce
+    url: "https://www.booking.com/searchresults.html?ss=Berlin"
+    method: GET
+    success_status: [200]
+    block_indicators:
+      - "captcha"
+      - "ROBOTS"
+    difficulty: medium
+    purpose: "Geo-aware pricing, mild antibot."
+
+search:
+  - id: google_serp
+    name: "Google SERP"
+    category: search
+    url: "https://www.google.com/search?q=residential+proxies+benchmark&hl=en"
+    method: GET
+    success_status: [200]
+    block_indicators:
+      - "Our systems have detected"
+      - "/sorry/"
+    difficulty: hard
+    purpose: "Google's own antibot; sensitive to ASN and DC IPs."
+
+cloudflare_akamai:
+  - id: discord_cf
+    name: "Discord (Cloudflare)"
+    category: cdn
+    url: "https://discord.com/"
+    method: GET
+    success_status: [200]
+    block_indicators:
+      - "Just a moment"
+      - "cf-chl"
+    difficulty: medium
+    purpose: "Cloudflare bot management baseline."
+
+  - id: vercel_cf
+    name: "Vercel landing"
+    category: cdn
+    url: "https://vercel.com/"
+    method: GET
+    success_status: [200]
+    block_indicators:
+      - "Just a moment"
+    difficulty: easy
+    purpose: "Cloudflare with mild challenge."
+
+steam:
+  - id: steam_store_product
+    name: "Steam Store (CS2)"
+    category: steam
+    url: "https://store.steampowered.com/app/730/CounterStrike_2/"
+    method: GET
+    success_status: [200]
+    success_body_contains: "Counter-Strike"
+    difficulty: easy
+    purpose: "Region-aware pricing; tests country targeting."
+
+  - id: steam_market_listings
+    name: "Steam Market listings (hardcore)"
+    category: steam
+    url: "https://steamcommunity.com/market/listings/730/AK-47%20%7C%20Asiimov%20%28Field-Tested%29/render?count=10&currency=1&format=json"
+    method: GET
+    success_status: [200]
+    block_indicators:
+      - "Too many requests"
+      - "429"
+    difficulty: extreme
+    purpose: "Aggressive per-IP rate limit (~3 req/min then 24h block). Real pain for skin traders."
+
+social_browser:
+  - id: instagram_profile
+    name: "Instagram public profile"
+    category: social
+    url: "https://www.instagram.com/instagram/"
+    method: GET
+    success_status: [200]
+    block_indicators:
+      - "challenge"
+      - "login"
+    difficulty: extreme
+    requires_browser: true
+    purpose: "Meta antibot; Geekproxy currently scrapes this stably."
+
+  - id: tiktok_profile
+    name: "TikTok public profile"
+    category: social
+    url: "https://www.tiktok.com/@tiktok"
+    method: GET
+    success_status: [200]
+    block_indicators:
+      - "captcha"
+      - "verify"
+    difficulty: extreme
+    requires_browser: true
+    purpose: "ByteDance antibot."
+
+  - id: linkedin_company
+    name: "LinkedIn company page"
+    category: social
+    url: "https://www.linkedin.com/company/microsoft/"
+    method: GET
+    success_status: [200, 999]
+    block_indicators:
+      - "authwall"
+      - "challenge"
+    difficulty: extreme
+    requires_browser: true
+    purpose: "LinkedIn aggressively walls non-authed access; 999 is their custom bot-block status."

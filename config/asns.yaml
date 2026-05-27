@@ -1,0 +1,36 @@
+version: 1
+description: "Major residential ISPs to test asn.X targeting."
+asns:
+  - asn: 7922
+    name: "Comcast Cable"
+    country: us
+  - asn: 7018
+    name: "AT&T"
+    country: us
+  - asn: 701
+    name: "Verizon Business"
+    country: us
+  - asn: 20115
+    name: "Charter / Spectrum"
+    country: us
+  - asn: 22773
+    name: "Cox Communications"
+    country: us
+  - asn: 21928
+    name: "T-Mobile US"
+    country: us
+  - asn: 2856
+    name: "BT (British Telecom)"
+    country: gb
+  - asn: 5089
+    name: "Virgin Media"
+    country: gb
+  - asn: 3320
+    name: "Deutsche Telekom"
+    country: de
+  - asn: 3215
+    name: "Orange France"
+    country: fr
+  - asn: 6739
+    name: "Vodafone Spain"
+    country: es
